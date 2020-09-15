@@ -82,7 +82,7 @@ const CreateSurveyWrapper = styled.div`
             }
         }
     }
-    #publish-btn{
+    button{
         margin:2em 0;
     }
 
@@ -102,7 +102,8 @@ export default class CreateSurvey extends Component {
                 options: []
             },
 
-            questions: []
+            questions: [],
+            submitAction: false
         }
     }
     getOptionsLimit = () => {
@@ -177,6 +178,9 @@ export default class CreateSurvey extends Component {
 
     }
     publish = () => {
+        this.setState({
+            submitAction: true
+        })
         console.log(this.state.questions);
     }
     render() {
@@ -237,9 +241,29 @@ export default class CreateSurvey extends Component {
                                 </>
                         }
                         {this.state.questions.length > 0
-                            &&
+                            && (!(this.state.submitAction)) &&
                             <button id="publish-btn" onClick={this.publish}>Publish</button>
                         }
+                    </div>
+                }
+                {this.state.submitAction &&
+                    <div className="confirmation">
+                        <div className="survey-details">
+                            {this.state.questions.map((value, index) => {
+                                return (
+                                    <div>
+                                        <h3>{value.text}</h3>
+                                        <ul>
+                                            {value.options.map((option) => <li>{option}</li>)}
+                                        </ul>
+                                    </div>
+                                );
+
+                            })}
+                        </div>
+                        <div>
+                            <button>Confirm</button>
+                        </div>
                     </div>
                 }
             </CreateSurveyWrapper>
